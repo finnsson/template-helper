@@ -27,7 +27,7 @@ extractAllFunctions pattern  =
   allMatchingFunctions pattern . parsedModule
 
 parsedModule moduleCode = 
-  let pMod = parseModuleWithMode ( ParseMode "test" [TemplateHaskell] False [] ) moduleCode
+  let pMod = parseModuleWithMode ( ParseMode "test" [TemplateHaskell] False False [] ) moduleCode
       moduleOrDefault (ParseFailed _ _) = Module (SrcLoc "unknown" 1 1) (ModuleName "unknown") [] Nothing Nothing [] []
       moduleOrDefault (ParseOk m) = m
   in moduleOrDefault pMod 
@@ -47,7 +47,15 @@ hsPVar _ = Nothing
 hsIdent (Ident n) = Just n
 hsIdent _ = Nothing
 
-
+-- | Extract the names and functions from the module where this function is called.
+-- 
+--  > foo = "test"
+--  > boo = "testing"
+--  > bar = $(functionExtractor "oo$")
+-- 
+-- will automagically extract the functions ending with "oo" such as
+-- 
+-- > bar = [("foo",foo), ("boo",boo)]
 functionExtractor :: String -> ExpQ
 functionExtractor pattern =
   do loc <- location
@@ -56,6 +64,7 @@ functionExtractor pattern =
          makePair n = TupE [ LitE $ StringL n , VarE $ mkName n]
      return $ ListE $ map makePair functions
 
+-- | Extract the name of the current module.
 locationModule :: ExpQ
 locationModule =
   do loc <- location

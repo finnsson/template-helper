@@ -1,18 +1,32 @@
 name: template-helper
-version: 0.0.1
+version: 0.1.0
 cabal-version: -any
 build-type: Simple
 license: BSD4
 license-file: ""
-copyright:
+copyright: ""
 maintainer: Oscar Finnsson
 build-depends: base >= 4, haskell98, regex-posix, haskell-src-exts, template-haskell
 stability:
-homepage:
+homepage: http://github.com/finnsson/template-helper
 package-url:
 bug-reports:
-synopsis:
-description: Module to automatically extract functions from the local hs-code using a pattern.
+synopsis: Module to automatically extract functions from the local hs-code using a pattern.
+description:
+   @template-helper@ contains some useful helper functions on top of Template Haskell.
+   .
+   @functionExtractor@ extracts all functions after a regexp-pattern.
+   .
+   > foo = "test"
+   > boo = "testing"
+   > bar = $(functionExtractor "oo$")
+   .  
+   will automagically extract the functions ending with @oo@ such as
+   . 
+   > bar = [("foo",foo), ("boo",boo)]
+   .
+   This can be useful if you wish to extract all functions beginning with test (for a test-framework)
+   or all functions beginning with wc (for a web service).
 category:
 author: Oscar Finnsson & Emil Nordling
 tested-with:
