@@ -24,6 +24,34 @@ is the same as
     fooBar = "hej"
     fooGoo = "nej"
 
+
+## functionExtractorMap ##
+
+functionExtractorMap works like functionsExtractor but applies a function over all function-pairs.
+
+This functions is useful if the common return type of the functions is a type class.
+
+### signature
+
+    functionExtractorMap :: String -> ExpQ -> ExpQ
+
+### example
+
+    secondTypeclassTest =
+      do let expected = ["45", "88.8", "\"hej\""]
+             actual = $(functionExtractorMap "^tc" [|\n f -> show f|] )
+         expected @=? actual
+    
+    tcInt :: Integer
+    tcInt = 45
+    
+    tcDouble :: Double
+    tcDouble = 88.8
+    
+    tcString :: String
+    tcString = "hej"
+
+
 ## locationModule
 
 ### signature
