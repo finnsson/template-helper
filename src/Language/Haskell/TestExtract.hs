@@ -1,24 +1,11 @@
------------------------------------------------------------------------------
---
--- Module      :  TemplateHelperTest
--- Copyright   :  
--- License     :  BSD4
---
--- Maintainer  :  Oscar Finnsson
--- Stability   :  
--- Portability :  
---
--- |
---
------------------------------------------------------------------------------
 {-# OPTIONS_GHC -fglasgow-exts -XTemplateHaskell #-}
-module TemplateHelperTest where
+module Language.Haskell.ExtractTest where
 
 import Test.Framework (defaultMain, testGroup)
 import Test.Framework.Providers.HUnit
 import Test.HUnit
 
-import TemplateHelper
+import Language.Haskell.Extract 
 
 main = defaultMain groupsOfTest
 

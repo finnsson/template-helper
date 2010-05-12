@@ -1,18 +1,4 @@
------------------------------------------------------------------------------
---
--- Module      :  TemplateHelper
--- Copyright   :  
--- License     :  BSD4
---
--- Maintainer  :  Oscar Finnsson
--- Stability   :  
--- Portability :  
---
--- |
---
------------------------------------------------------------------------------
-
-module TemplateHelper (
+module Language.Haskell.Extract (
   functionExtractor,
   functionExtractorMap,
   locationModule
