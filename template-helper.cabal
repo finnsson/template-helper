@@ -2,16 +2,16 @@ name: template-helper
 version: 0.1.2
 cabal-version: -any
 build-type: Simple
-license: BSD4
-license-file: ""
+license: BSD3
+license-file: "BSD3.txt"
 copyright: ""
 maintainer: Oscar Finnsson
 build-depends: base >= 4, haskell98, regex-posix, haskell-src-exts, template-haskell
-stability:
+stability: stable
 homepage: http://github.com/finnsson/template-helper
 package-url:
 bug-reports:
-synopsis: Module to automatically extract functions from the local hs-code using a pattern.
+synopsis: Module to automatically extract functions from the local code.
 description:
    @template-helper@ contains some useful helper functions on top of Template Haskell.
    .
@@ -47,7 +47,7 @@ description:
    > 
    > tcString :: String
    > tcString = "hej"
-category:
+category: Template Haskell
 author: Oscar Finnsson & Emil Nordling
 tested-with:
 data-files:
