@@ -5,6 +5,7 @@ module Language.Haskell.Extract (
 ) where
 import Language.Haskell.TH
 import Language.Haskell.Exts.Parser
+import Language.Haskell.Exts (parseFileContentsWithMode)
 import Language.Haskell.Exts.Syntax
 import Text.Regex.Posix
 import Maybe
@@ -15,7 +16,7 @@ extractAllFunctions pattern  =
   allMatchingFunctions pattern . parsedModule
 
 parsedModule moduleCode = 
-  let pMod = parseModuleWithMode ( ParseMode "test" [TemplateHaskell] False False [] ) moduleCode
+  let pMod = parseFileContentsWithMode (defaultParseMode { extensions = knownExtensions } ) moduleCode
       moduleOrDefault (ParseFailed _ _) = Module (SrcLoc "unknown" 1 1) (ModuleName "unknown") [] Nothing Nothing [] []
       moduleOrDefault (ParseOk m) = m
   in moduleOrDefault pMod 

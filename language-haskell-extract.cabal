@@ -1,5 +1,5 @@
 name: language-haskell-extract
-version: 0.1.2
+version: 0.1.3
 cabal-version: -any
 build-type: Simple
 license: BSD3

@@ -22,7 +22,7 @@ groupsOfTest = [
 
 firstTest = "firstTest" @=? fst (head  $(functionExtractor "^first"))
 
-secondTest = "TemplateHelperTest" @=? $(locationModule)
+secondTest = "Language.Haskell.ExtractTest" @=? $(locationModule)
 
 thirdTest = snd (head $(functionExtractor "thirdFunction")) @=? "hej"
 
