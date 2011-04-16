@@ -1,4 +1,4 @@
-{-# OPTIONS_GHC -fglasgow-exts -XTemplateHaskell #-}
+{-# OPTIONS_GHC -XTemplateHaskell #-}
 module Language.Haskell.ExtractTest where
 
 import Test.Framework (defaultMain, testGroup)

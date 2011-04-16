@@ -9,11 +9,17 @@ import Language.Haskell.Exts (parseFileContentsWithMode)
 import Language.Haskell.Exts.Syntax
 import Text.Regex.Posix
 import Maybe
+import Data.List
 import Language.Haskell.Exts.Extension
 
 extractAllFunctions :: String -> String-> [String]
-extractAllFunctions pattern  = 
-  allMatchingFunctions pattern . parsedModule
+extractAllFunctions pattern file  = 
+--  allMatchingFunctions pattern . parsedModule
+  nub $ filter (\f->f=~pattern::Bool) $ map (fst . head . lex) $ lines file
+
+-- nub $ filter ("prop_" `isPrefixOf`) $
+-- map (fst . head . lex) $ lines ct
+
 
 parsedModule moduleCode = 
   let pMod = parseFileContentsWithMode (defaultParseMode { extensions = knownExtensions } ) moduleCode
@@ -53,6 +59,13 @@ functionExtractor pattern =
      return $ ListE $ map makePair functions
 
 
+-- functionExtractor' :: String -> Q [String]
+-- functionExtractor' pattern =
+--   do loc <- location
+--      moduleCode <- runIO $ readFile $ loc_filename loc
+--      let functions = extractAllFunctions pattern moduleCode
+--      return functions
+
 -- | Extract the names and functions from the module and apply a function to every pair.
 -- 
 -- Is very useful if the common denominator of the functions is just a type class.
@@ -79,6 +92,16 @@ functionExtractorMap pattern funcName =
      fn <- funcName
      let makePair n = AppE (AppE (fn) (LitE $ StringL n)) (VarE $ mkName n)
      return $ ListE $ map makePair functions 
+
+-- functionExtractorExpMap :: String -> (Exp -> ExpQ) -> ExpQ
+-- functionExtractorExpMap pattern func =
+--   do loc <- location
+--      moduleCode <- runIO $ readFile $ loc_filename loc
+--      let functions :: [String]
+--          functions = extractAllFunctions pattern moduleCode
+--      fn <- funcName
+--      let makePair n = AppE (AppE (fn) (LitE $ StringL n)) (VarE $ mkName n)
+--      return $ ListE $ map makePair functions   
 
 -- | Extract the name of the current module.
 locationModule :: ExpQ
