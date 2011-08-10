@@ -8,7 +8,7 @@ import Language.Haskell.Exts.Parser
 import Language.Haskell.Exts (parseFileContentsWithMode)
 import Language.Haskell.Exts.Syntax
 import Text.Regex.Posix
-import Maybe
+import Data.Maybe
 import Data.List
 import Language.Haskell.Exts.Extension
 
