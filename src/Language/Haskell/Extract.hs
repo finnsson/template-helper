@@ -4,42 +4,18 @@ module Language.Haskell.Extract (
   locationModule
 ) where
 import Language.Haskell.TH
-import Language.Haskell.Exts.Parser
-import Language.Haskell.Exts (parseFileContentsWithMode)
-import Language.Haskell.Exts.Syntax
 import Text.Regex.Posix
 import Data.Maybe
 import Data.List
+import Data.Char
 import Language.Haskell.Exts.Extension
 
 extractAllFunctions :: String -> String-> [String]
 extractAllFunctions pattern file  = 
---  allMatchingFunctions pattern . parsedModule
   nub $ filter (\f->f=~pattern::Bool) $ map (fst . head . lex) $ lines file
 
--- nub $ filter ("prop_" `isPrefixOf`) $
--- map (fst . head . lex) $ lines ct
-
-
-parsedModule moduleCode = 
-  let pMod = parseFileContentsWithMode (defaultParseMode { extensions = knownExtensions } ) moduleCode
-      moduleOrDefault (ParseFailed _ _) = Module (SrcLoc "unknown" 1 1) (ModuleName "unknown") [] Nothing Nothing [] []
-      moduleOrDefault (ParseOk m) = m
-  in moduleOrDefault pMod 
-
-allFunctions =  onlyJust extractNameOfFunctionFromDecl . hsModuleDecls 
-allMatchingFunctions pattern = filter (\f->f=~pattern::Bool) . allFunctions 
-
-
-
-extractNameOfFunctionFromDecl :: Decl -> Maybe String
-extractNameOfFunctionFromDecl (PatBind _ (PVar (Ident n)) _ _ _ ) = Just n
-extractNameOfFunctionFromDecl (FunBind ms) = Just $ head $ [n | (Language.Haskell.Exts.Syntax.Match _ (Ident n) _ _ _ _)  <- ms]
-extractNameOfFunctionFromDecl _ = Nothing
 
 onlyJust f = map fromJust . filter isJust . map f
-
-hsModuleDecls (Module _ _ _ _ _ _ d) = d
 
 -- | Extract the names and functions from the module where this function is called.
 -- 
