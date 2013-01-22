@@ -48,8 +48,9 @@ description:
    > tcString = "hej"
 category: Template Haskell
 author: Oscar Finnsson & Emil Nordling
- 
+
 library
+  ghc-options: -Wall
   hs-source-dirs: src
   exposed-modules: Language.Haskell.Extract
   build-depends: base >= 4 && < 5, regex-posix, template-haskell
