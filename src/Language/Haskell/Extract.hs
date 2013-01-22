@@ -5,17 +5,11 @@ module Language.Haskell.Extract (
 ) where
 import Language.Haskell.TH
 import Text.Regex.Posix
-import Data.Maybe
 import Data.List
-import Data.Char
-import Language.Haskell.Exts.Extension
 
 extractAllFunctions :: String -> String-> [String]
 extractAllFunctions pattern file  = 
   nub $ filter (\f->f=~pattern::Bool) $ map (fst . head . lex) $ lines file
-
-
-onlyJust f = map fromJust . filter isJust . map f
 
 -- | Extract the names and functions from the module where this function is called.
 -- 
