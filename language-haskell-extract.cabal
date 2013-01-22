@@ -56,4 +56,4 @@ library
 
 source-repository head
   type:     git
-  location: https://github.com/finnsson/language-haskell-extract/
+  location: http://github.com/finnsson/template-helper
