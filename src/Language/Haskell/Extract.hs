@@ -11,7 +11,7 @@ extractAllFunctions :: String -> Q [String]
 extractAllFunctions pattern =
   do loc <- location
      file <- runIO $ readFile $ loc_filename loc
-     return $ nub $ filter (=~pattern) $ map (fst . head . lex) $ lines file
+     return $ nub $ filter (=~pattern) $ map fst $ concat $ map lex $ lines file
 
 -- | Extract the names and functions from the module where this function is called.
 -- 
