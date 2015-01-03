@@ -6,11 +6,20 @@ module Language.Haskell.Extract (
 import Language.Haskell.TH
 import Text.Regex.Posix
 import Data.List
+import System.IO
 
 extractAllFunctions :: String -> Q [String]
 extractAllFunctions pattern =
   do loc <- location
-     file <- runIO $ readFile $ loc_filename loc
+     file <- runIO $ do
+       h <- openFile (loc_filename loc) ReadMode
+       -- Haskell programs are usually written in UTF-8, but the default file
+       -- encoding is determined by locale and may be different (e.g. CP932 encoding
+       -- is used on Japanese Windows environment).
+       -- To avoid "hGetContents: invalid argument (invalid byte sequence)" error
+       -- on such cases, we explicitly specify file encoding as UTF-8.
+       hSetEncoding h =<< mkTextEncoding "UTF-8//IGNORE"
+       hGetContents h
      return $ nub $ filter (=~pattern) $ map fst $ concat $ map lex $ lines file
 
 -- | Extract the names and functions from the module where this function is called.
