@@ -6,6 +6,7 @@ module Language.Haskell.Extract (
 import Language.Haskell.TH
 import Text.Regex.Posix
 import Data.List
+import Data.Maybe
 
 extractAllFunctions :: String -> Q [String]
 extractAllFunctions pattern =
@@ -25,8 +26,11 @@ extractAllFunctions pattern =
 functionExtractor :: String -> ExpQ
 functionExtractor pattern =
   do functions <- extractAllFunctions pattern
-     let makePair n = TupE [ LitE $ StringL n , VarE $ mkName n]
-     return $ ListE $ map makePair functions
+     let makePair n = do
+           name <- lookupValueName n
+           return $ fmap (\nm -> TupE [ LitE $ StringL n, VarE nm]) name
+
+     fmap (ListE . catMaybes) $ mapM makePair functions
 
 
 -- | Extract the names and functions from the module and apply a function to every pair.
